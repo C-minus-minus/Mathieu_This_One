@@ -24,5 +24,23 @@ public class TextureManager {
             }
         }
         front = image;
+
+        //  create 16x16 grid of our top texture
+        image = new PImage(384*16,384*16);
+        for(int x=0;x<16;x++){
+            for(int y=0;y<16;y++){
+                image.set(x*384,y*384,top);
+            }
+        }
+        top = image;
+
+        //  create 16x16 grid of our top texture
+        image = new PImage(384*16,384*16);
+        for(int x=0;x<16;x++){
+            for(int y=0;y<16;y++){
+                image.set(x*384,y*384,bottom);
+            }
+        }
+        bottom = image;
     }
 }

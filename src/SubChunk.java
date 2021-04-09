@@ -27,9 +27,15 @@ public class SubChunk {
 
         for(int z=0;z<16;z++){
             boolean[][] fMask = new boolean[16][16];
+            boolean[][] bMask = new boolean[16][16];
+            boolean[][] lMask = new boolean[16][16];
+            boolean[][] rMask = new boolean[16][16];
+            boolean[][] tMask = new boolean[16][16];
+            boolean[][] btMask = new boolean[16][16];
             for(int x=0;x<16;x++){
                 for(int y=0;y<16;y++){
 
+                    //  front section
                     fMask[x][y] = true;
                     //  if this block isn't air
                     if(!parent.blocks[x][y+index*16][z].type.equals("air")){
@@ -41,6 +47,81 @@ public class SubChunk {
                         //  if block in front of this block is air
                         else if(parent.blocks[x][y+index*16][z-1].type.equals("air")){
                             fMask[x][y] = false;
+                        }
+                    }
+
+                    //  back section
+                    bMask[x][y] = true;
+                    //  if this block isn't air
+                    if(!parent.blocks[x][y+index*16][z].type.equals("air")){
+
+                        //  if chunk border
+                        if(z==15){
+                            bMask[x][y] = false;
+                        }
+                        //  if block behind of this block is air
+                        else if(parent.blocks[x][y+index*16][z+1].type.equals("air")){
+                            bMask[x][y] = false;
+                        }
+                    }
+
+                    //  left section
+                    lMask[x][y] = true;
+                    //  if this block isn't air
+                    if(!parent.blocks[z][y+index*16][x].type.equals("air")){
+
+                        //  if chunk border
+                        if(z==0){
+                            lMask[x][y] = false;
+                        }
+                        //  if block in front of this block is air
+                        else if(parent.blocks[z-1][y+index*16][x].type.equals("air")){
+                            lMask[x][y] = false;
+                        }
+                    }
+
+                    //  right section
+                    rMask[x][y] = true;
+                    //  if this block isn't air
+                    if(!parent.blocks[z][y+index*16][x].type.equals("air")){
+
+                        //  if chunk border
+                        if(z==15){
+                            rMask[x][y] = false;
+                        }
+                        //  if block in front of this block is air
+                        else if(parent.blocks[z+1][y+index*16][x].type.equals("air")){
+                            rMask[x][y] = false;
+                        }
+                    }
+
+                    //  top section
+                    tMask[x][y] = true;
+                    //  if this block isn't air
+                    if(!parent.blocks[x][z+index*16][y].type.equals("air")){
+
+                        //  if chunk border
+                        if(z==0&&index==0){
+                            tMask[x][y] = false;
+                        }
+                        //  if block in front of this block is air
+                        else if(parent.blocks[x][(z-1)+index*16][y].type.equals("air")){
+                            tMask[x][y] = false;
+                        }
+                    }
+
+                    //  bottom section
+                    btMask[x][y] = true;
+                    //  if this block isn't air
+                    if(!parent.blocks[x][z+index*16][y].type.equals("air")){
+
+                        //  if chunk border
+                        if(z==15&&index==15){
+                            btMask[x][y] = false;
+                        }
+                        //  if block in front of this block is air
+                        else if(parent.blocks[x][(z+1)+index*16][y].type.equals("air")){
+                            btMask[x][y] = false;
                         }
                     }
                 }
@@ -57,6 +138,86 @@ public class SubChunk {
                 pShape.vertex((r.x+r.width)*100,r.y*100+index*1600,z*100,r.width*384,0);
                 pShape.vertex((r.x+r.width)*100,(r.y+r.height)*100+index*1600,z*100,r.width*384,r.height*384);
                 pShape.vertex((r.x)*100,(r.y+r.height)*100+index*1600,z*100,0,r.height*384);
+
+                pShape.endShape();
+                meshes.add(pShape);
+            }
+
+            ArrayList<Rectangle> bMesh = maskToMesh(bMask);
+            for(Rectangle r:bMesh){
+                PShape pShape = parent.app.createShape();
+                pShape.beginShape();
+                pShape.noStroke();
+                pShape.texture(parent.textureManager.front);
+
+                pShape.vertex(r.x*100,r.y*100+index*1600,(z+1)*100,0,0);
+                pShape.vertex((r.x+r.width)*100,r.y*100+index*1600,(z+1)*100,r.width*384,0);
+                pShape.vertex((r.x+r.width)*100,(r.y+r.height)*100+index*1600,(z+1)*100,r.width*384,r.height*384);
+                pShape.vertex((r.x)*100,(r.y+r.height)*100+index*1600,(z+1)*100,0,r.height*384);
+
+                pShape.endShape();
+                meshes.add(pShape);
+            }
+
+            ArrayList<Rectangle> lMesh = maskToMesh(lMask);
+            for(Rectangle r:lMesh){
+                PShape pShape = parent.app.createShape();
+                pShape.beginShape();
+                pShape.noStroke();
+                pShape.texture(parent.textureManager.front);
+
+                pShape.vertex(z*100,r.y*100+index*1600,r.x*100,0,0);
+                pShape.vertex(z*100,r.y*100+index*1600,(r.x+r.width)*100,r.width*384,0);
+                pShape.vertex(z*100,(r.y+r.height)*100+index*1600,(r.x+r.width)*100,r.width*384,r.height*384);
+                pShape.vertex(z*100,(r.y+r.height)*100+index*1600,(r.x)*100,0,r.height*384);
+
+                pShape.endShape();
+                meshes.add(pShape);
+            }
+
+            ArrayList<Rectangle> rMesh = maskToMesh(rMask);
+            for(Rectangle r:rMesh){
+                PShape pShape = parent.app.createShape();
+                pShape.beginShape();
+                pShape.noStroke();
+                pShape.texture(parent.textureManager.front);
+
+                pShape.vertex((z+1)*100,r.y*100+index*1600,r.x*100,0,0);
+                pShape.vertex((z+1)*100,r.y*100+index*1600,(r.x+r.width)*100,r.width*384,0);
+                pShape.vertex((z+1)*100,(r.y+r.height)*100+index*1600,(r.x+r.width)*100,r.width*384,r.height*384);
+                pShape.vertex((z+1)*100,(r.y+r.height)*100+index*1600,(r.x)*100,0,r.height*384);
+
+                pShape.endShape();
+                meshes.add(pShape);
+            }
+
+            ArrayList<Rectangle> tMesh = maskToMesh(tMask);
+            for(Rectangle r:tMesh){
+                PShape pShape = parent.app.createShape();
+                pShape.beginShape();
+                pShape.noStroke();
+                pShape.texture(parent.textureManager.top);
+
+                pShape.vertex(r.x*100,z*100,r.y*100,0,0);
+                pShape.vertex((r.x+r.width)*100,z*100+index*1600,r.y*100,r.width*384,0);
+                pShape.vertex((r.x+r.width)*100,z*100+index*1600,(r.y+r.height)*100,r.width*384,r.height*384);
+                pShape.vertex((r.x)*100,z*100+index*1600,(r.y+r.height)*100,0,r.height*384);
+
+                pShape.endShape();
+                meshes.add(pShape);
+            }
+
+            ArrayList<Rectangle> btMesh = maskToMesh(btMask);
+            for(Rectangle r:btMesh){
+                PShape pShape = parent.app.createShape();
+                pShape.beginShape();
+                pShape.noStroke();
+                pShape.texture(parent.textureManager.top);
+
+                pShape.vertex(r.x*100,(z+1)*100,r.y*100,0,0);
+                pShape.vertex((r.x+r.width)*100,(z+1)*100+index*1600,r.y*100,r.width*384,0);
+                pShape.vertex((r.x+r.width)*100,(z+1)*100+index*1600,(r.y+r.height)*100,r.width*384,r.height*384);
+                pShape.vertex((r.x)*100,(z+1)*100+index*1600,(r.y+r.height)*100,0,r.height*384);
 
                 pShape.endShape();
                 meshes.add(pShape);

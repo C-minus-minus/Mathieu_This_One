@@ -27,6 +27,10 @@ public class Player extends QueasyCam {
         app.fill(255,0,0);
         app.text("FPS: "+(int)app.frameRate,0,50);
 
+        //  draw mem on screen
+        long heapSize = Runtime.getRuntime().totalMemory()/1000000;
+        app.text("Mem: "+(int)heapSize+"MB",0,100);
+
         //  stop drawing HUD
         app.hint(PConstants.ENABLE_DEPTH_TEST);
         app.popMatrix();
