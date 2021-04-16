@@ -1,4 +1,5 @@
 import processing.core.PShape;
+import processing.core.PVector;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,6 +22,19 @@ public class SubChunk {
         for(PShape s:meshes){
             parent.app.shape(s);
         }
+    }
+
+    public double distance(PVector playerPos){
+
+        double x1 = parent.pos.x;
+        double y1 = index*16;
+        double z1 = parent.pos.y;
+
+        double x2 = playerPos.x;
+        double y2 = playerPos.y;
+        double z2 = playerPos.z;
+
+        return Math.sqrt(Math.pow(x1-x2,2) +Math.pow(y1-y2,2)+ Math.pow(z1-z2,2));
     }
 
     public void genMeshes(){

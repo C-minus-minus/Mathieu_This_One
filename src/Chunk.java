@@ -1,4 +1,5 @@
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Chunk {
 
@@ -10,12 +11,13 @@ public class Chunk {
     SubChunk[] subChunks;
 
     TextureManager textureManager;
+    PVector pos;
 
-    public Chunk(PApplet app){
+    public Chunk(PApplet app,TextureManager textureManager,PVector pos){
 
         this.app = app;
-
-        textureManager = new TextureManager(app);
+        this.pos = pos;
+        this.textureManager = textureManager;
 
         //  set up our blocks
         width = 16;
@@ -25,7 +27,7 @@ public class Chunk {
         for(int x=0;x<width;x++){
             for(int y=0;y<height;y++){
                 for(int z=0;z<depth;z++){
-                    String type = app.noise(x*.08f,y*.08f,z*.08f)>.5?"grass":"air";
+                    String type = app.noise((x+pos.x)*.08f,y*.08f,(z+pos.y)*.08f)>.5?"grass":"air";
                     blocks[x][y][z] = new Block(app,textureManager,type);
                 }
             }
@@ -46,70 +48,13 @@ public class Chunk {
             s.draw();
         }
 
-        if(true)return;
+    }
 
-        for(int x=0;x<width;x++){
-            for(int y=0;y<height;y++){
-                for(int z=0;z<depth;z++){
-
-                    //  if this block is air, skip it
-                    if(blocks[x][y][z].type.equals("air")){
-                        continue;
-                    }
-                    app.pushMatrix();
-                    app.translate(x*100,y*100,z*100);
-
-                    //  draw left face
-                    if(x==0){
-                        blocks[x][y][z].drawLeft();
-                    }
-                    else if(blocks[x-1][y][z].type.equals("air")){
-                        blocks[x][y][z].drawLeft();
-                    }
-
-                    //  draw right face
-                    if(x==width-1){
-                        blocks[x][y][z].drawRight();
-                    }
-                    else if(blocks[x+1][y][z].type.equals("air")){
-                        blocks[x][y][z].drawRight();
-                    }
-
-                    //  draw top face
-                    if(y==0){
-                        blocks[x][y][z].drawTop();
-                    }
-                    else if(blocks[x][y-1][z].type.equals("air")){
-                        blocks[x][y][z].drawTop();
-                    }
-
-                    //  draw bottom face
-                    if(y==height-1){
-                        blocks[x][y][z].drawBottom();
-                    }
-                    else if(blocks[x][y+1][z].type.equals("air")){
-                        blocks[x][y][z].drawBottom();
-                    }
-
-                    //  draw front face
-                    if(z==0){
-                        blocks[x][y][z].drawFront();
-                    }
-                    else if(blocks[x][y][z-1].type.equals("air")){
-                        blocks[x][y][z].drawFront();
-                    }
-
-                    //  draw back face
-                    if(z==depth-1){
-                        blocks[x][y][z].drawBack();
-                    }
-                    else if(blocks[x][y][z+1].type.equals("air")){
-                        blocks[x][y][z].drawBack();
-                    }
-
-                    app.popMatrix();
-                }
-            }
-        }
+    public double distance(PVector playerPos){
+        double x1 = pos.x;
+        double y1 = pos.y;
+        double x2 = playerPos.x;
+        double y2 = playerPos.z;
+        return Math.sqrt( Math.pow(x1-x2,2) + Math.pow(y1-y2,2) );
     }
 }

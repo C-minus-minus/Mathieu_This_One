@@ -2,8 +2,7 @@ import processing.core.PApplet;
 
 public class VoxelGame extends PApplet {
 
-    Player player;
-    Chunk chunk;
+    World world;
 
     public static void main(String[] args) {
         PApplet.main("VoxelGame");
@@ -15,13 +14,12 @@ public class VoxelGame extends PApplet {
 
     public void setup(){
 
-        player = new Player(this);
-        chunk = new Chunk(this);
+        world = new World(this);
     }
 
     public void draw(){
 
         background(0);
-        chunk.draw();
+        world.draw();
     }
 }
