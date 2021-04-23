@@ -19,8 +19,13 @@ public class SubChunk {
     }
 
     public void draw(){
-        for(PShape s:meshes){
-            parent.app.shape(s);
+
+        PVector p = parent.world.player.position;
+        PVector newPlayer = new PVector(p.x/100,p.y/100,p.z/100);
+        if(distance(newPlayer)<parent.renderDistance){
+            for(PShape s:meshes){
+                parent.app.shape(s);
+            }
         }
     }
 

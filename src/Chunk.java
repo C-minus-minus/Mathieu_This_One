@@ -5,6 +5,8 @@ public class Chunk {
 
     PApplet app;
 
+    World world;
+
     Block[][][] blocks;
     int width,height,depth;
 
@@ -13,11 +15,14 @@ public class Chunk {
     TextureManager textureManager;
     PVector pos;
 
-    public Chunk(PApplet app,TextureManager textureManager,PVector pos){
+    int renderDistance = 60;
+
+    public Chunk(PApplet app,TextureManager textureManager,PVector pos,World world){
 
         this.app = app;
         this.pos = pos;
         this.textureManager = textureManager;
+        this.world = world;
 
         //  set up our blocks
         width = 16;
@@ -44,10 +49,13 @@ public class Chunk {
 
     public void draw(){
 
-        for(SubChunk s:subChunks){
-            s.draw();
+        PVector p = world.player.position;
+        PVector newPlayer = new PVector(p.x/100,p.y/100,p.z/100);
+        if(distance(newPlayer)<renderDistance){
+            for(SubChunk s:subChunks){
+                s.draw();
+            }
         }
-
     }
 
     public double distance(PVector playerPos){

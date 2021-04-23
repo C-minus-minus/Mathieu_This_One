@@ -25,7 +25,7 @@ public class World {
         textureManager = new TextureManager(app);
 
         //set up our player
-        player = new Player(app);
+        player = new Player(app,this);
 
         //  set up chunks
         width = 2;
@@ -34,7 +34,7 @@ public class World {
         for(int x=0;x<width;x++){
             for(int y=0;y<length;y++){
                 PVector pos = new PVector(x,y);
-                chunks[x][y] = new Chunk(app,textureManager,pos);
+                chunks[x][y] = new Chunk(app,textureManager,pos,this);
             }
         }
 
@@ -52,5 +52,21 @@ public class World {
                 app.popMatrix();
             }
         }
+    }
+
+    public String getBlock(PVector blockPos){
+        int chunkX = (int)(blockPos.x/16);
+        int chunkY = (int)(blockPos.z/16);
+
+        int blockX = (int)(blockPos.x%16);
+        int blockY = (int)(blockPos.y%16);
+        int blockZ = (int)(blockPos.z%16);
+
+        try{
+            Chunk chunk = chunks[chunkX][chunkY];
+            return chunk.blocks[blockX][blockY][blockZ].type;
+        }catch (Exception e){}
+
+        return "";
     }
 }
