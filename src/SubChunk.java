@@ -212,7 +212,7 @@ public class SubChunk {
                 pShape.noStroke();
                 pShape.texture(parent.textureManager.top);
 
-                pShape.vertex(r.x*100,z*100,r.y*100,0,0);
+                pShape.vertex(r.x*100,z*100+index*1600,r.y*100,0,0);
                 pShape.vertex((r.x+r.width)*100,z*100+index*1600,r.y*100,r.width*384,0);
                 pShape.vertex((r.x+r.width)*100,z*100+index*1600,(r.y+r.height)*100,r.width*384,r.height*384);
                 pShape.vertex((r.x)*100,z*100+index*1600,(r.y+r.height)*100,0,r.height*384);
@@ -226,9 +226,9 @@ public class SubChunk {
                 PShape pShape = parent.app.createShape();
                 pShape.beginShape();
                 pShape.noStroke();
-                pShape.texture(parent.textureManager.top);
+                pShape.texture(parent.textureManager.bottom);
 
-                pShape.vertex(r.x*100,(z+1)*100,r.y*100,0,0);
+                pShape.vertex(r.x*100,(z+1)*100+index*1600,r.y*100,0,0);
                 pShape.vertex((r.x+r.width)*100,(z+1)*100+index*1600,r.y*100,r.width*384,0);
                 pShape.vertex((r.x+r.width)*100,(z+1)*100+index*1600,(r.y+r.height)*100,r.width*384,r.height*384);
                 pShape.vertex((r.x)*100,(z+1)*100+index*1600,(r.y+r.height)*100,0,r.height*384);
