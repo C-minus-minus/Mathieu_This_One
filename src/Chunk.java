@@ -65,4 +65,13 @@ public class Chunk {
         double y2 = playerPos.z;
         return Math.sqrt( Math.pow(x1-x2,2) + Math.pow(y1-y2,2) );
     }
+
+    public void setBlock(int x,int y, int z,String type){
+        try{
+
+            Block block = blocks[x][y][z];
+            block.type = type;
+            subChunks[y/16].genMeshes();
+        }catch (Exception e){}
+    }
 }

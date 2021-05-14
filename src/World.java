@@ -59,14 +59,32 @@ public class World {
         int chunkY = (int)(blockPos.z/16);
 
         int blockX = (int)(blockPos.x%16);
-        int blockY = (int)(blockPos.y%16);
+        int blockY = (int)(blockPos.y);
         int blockZ = (int)(blockPos.z%16);
 
         try{
             Chunk chunk = chunks[chunkX][chunkY];
             return chunk.blocks[blockX][blockY][blockZ].type;
-        }catch (Exception e){}
+        }catch (Exception e){
+            return "";
+        }
 
-        return "";
+        //return "";
+    }
+
+    public void setBlock(PVector blockPos,String type){
+        //  finds the chunk
+        int chunkX = (int)(blockPos.x/16);
+        int chunkY = (int)(blockPos.z/16);
+
+        //  finds the block
+        int blockX = (int)(blockPos.x%16);
+        int blockY = (int)(blockPos.y%16);
+        int blockZ = (int)(blockPos.z%16);
+
+        try{
+            Chunk chunk = chunks[chunkX][chunkY];
+            chunk.setBlock(blockX,blockY,blockZ,type);
+        }catch (Exception e){}
     }
 }
